@@ -2,9 +2,15 @@ pipeline {
   agent any
 
   stages {
-    stage('Instalar Python si no está') {
+    stage('Verificar Python') {
       steps {
-        sh 'which python3 || sudo apt update && sudo apt install -y python3 python3-pip python3-venv'
+        // Si python3 no está, lo notifica
+        sh '''
+          if ! command -v python3; then
+            echo "❌ Python3 no está instalado en Jenkins. Debes instalarlo manualmente en el contenedor Jenkins."
+            exit 1
+          fi
+        '''
       }
     }
 
