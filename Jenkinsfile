@@ -1,10 +1,15 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'python:3.11'  // Imagen oficial de Python
+      args '-v /var/jenkins_home:/var/jenkins_home'  // Opcional: para persistencia
+    }
+  }
 
   stages {
     stage('Preparar entorno') {
       steps {
-        sh 'python3 -m venv venv'
+        sh 'python -m venv venv'
         sh '. venv/bin/activate && pip install -r requirements.txt'
       }
     }
