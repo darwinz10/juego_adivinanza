@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+
+  environment {
+    PYTHON_ENV = 'venv'
+  }
+
+  stages {
+    stage('Preparar entorno') {
+      steps {
+        sh 'python -m venv $PYTHON_ENV'
+        sh '. $PYTHON_ENV/Scripts/activate && pip install -r requirements.txt'
+      }
+    }
+
+    stage('Ejecutar pruebas') {
+      steps {
+        sh '. $PYTHON_ENV/Scripts/activate && pytest'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo '✅ Todo funcionó correctamente.'
+    }
+    failure {
+      echo '❌ Hubo un error en el pipeline.'
+    }
+  }
+}
