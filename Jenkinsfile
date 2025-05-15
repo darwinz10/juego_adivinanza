@@ -4,17 +4,14 @@ pipeline {
   stages {
     stage('Preparar entorno') {
       steps {
-        // Crear entorno virtual
-        bat 'python -m venv venv'
-        // Activar entorno e instalar dependencias
-        bat '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
+        sh 'python3 -m venv venv'
+        sh '. venv/bin/activate && pip install -r requirements.txt'
       }
     }
 
     stage('Ejecutar pruebas') {
       steps {
-        // Activar entorno y ejecutar pytest
-        bat '.\\venv\\Scripts\\activate && pytest'
+        sh '. venv/bin/activate && pytest'
       }
     }
   }
